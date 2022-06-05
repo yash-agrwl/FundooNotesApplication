@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FundooNotesApplication", "FundooNotesApplication\FundooNotesApplication.csproj", "{AAEFB593-DCD0-45A8-9055-AE749B02CED8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FundooNotesApplication", "FundooNotesApplication\FundooNotesApplication.csproj", "{AAEFB593-DCD0-45A8-9055-AE749B02CED8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoryLayer", "RepositoryLayer\RepositoryLayer.csproj", "{926070B3-A06D-453A-BB10-7392774E0D2C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLayer", "BusinessLayer\BusinessLayer.csproj", "{49DFB2F6-3FBA-4F0D-BA76-4F602D4951DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLayer", "CommonLayer\CommonLayer.csproj", "{A555F20E-296B-46E0-879D-AC12F6B63C63}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{AAEFB593-DCD0-45A8-9055-AE749B02CED8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AAEFB593-DCD0-45A8-9055-AE749B02CED8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AAEFB593-DCD0-45A8-9055-AE749B02CED8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{926070B3-A06D-453A-BB10-7392774E0D2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{926070B3-A06D-453A-BB10-7392774E0D2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{926070B3-A06D-453A-BB10-7392774E0D2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{926070B3-A06D-453A-BB10-7392774E0D2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49DFB2F6-3FBA-4F0D-BA76-4F602D4951DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49DFB2F6-3FBA-4F0D-BA76-4F602D4951DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49DFB2F6-3FBA-4F0D-BA76-4F602D4951DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49DFB2F6-3FBA-4F0D-BA76-4F602D4951DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A555F20E-296B-46E0-879D-AC12F6B63C63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A555F20E-296B-46E0-879D-AC12F6B63C63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A555F20E-296B-46E0-879D-AC12F6B63C63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A555F20E-296B-46E0-879D-AC12F6B63C63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
