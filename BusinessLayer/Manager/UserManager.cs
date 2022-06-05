@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BusinessLayer
+namespace BusinessLayer.Manager
 {
     public class UserManager
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RepositoryLayer
+namespace RepositoryLayer.Repository
 {
     public class UserRepository
     {
