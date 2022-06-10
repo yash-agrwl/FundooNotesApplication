@@ -1,12 +1,39 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BusinessLayer.Interface;
+using CommonLayer;
+using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace FundooNotesApplication.Controllers
 {
     public class UserController : Controller
     {
-        public IActionResult Index()
+        private readonly IUserManager manager;
+
+        public UserController(IUserManager manager)
         {
-            return View();
+            this.manager = manager;
+        }
+
+        [HttpPost]
+        [Route("api/register")]
+        public IActionResult Register([FromBody] RegisterModel userdata)
+        {
+            try
+            {
+                string result = this.manager.Register(userdata);
+                if (result.Equals("Registration Successful"))
+                {
+                    return this.Ok(new ResponseModel<string>() { Status = true, Message = result, Data = "Session Data" });
+                }
+                else
+                {
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = result });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
+            }
         }
     }
 }
