@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RepositoryLayer.Context;
 
 namespace FundooNotesApplication
 {
@@ -19,6 +20,8 @@ namespace FundooNotesApplication
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddDbContextPool<FundooContext>(options => options.UseMySql(this.Configuration.GetConnectionString("FundooDB")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
