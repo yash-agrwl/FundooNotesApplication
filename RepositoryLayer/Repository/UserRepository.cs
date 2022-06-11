@@ -21,26 +21,32 @@ namespace RepositoryLayer.Repository
             this.fundooContext = fundooContext;
         }
 
-        public string Register(RegisterModel userData)
+        public ResponseModel<RegisterModel> Register(RegisterModel userData)
         {
             try
             {
                 var validEmail = this.fundooContext.Users.Where(x => x.Email == userData.Email).FirstOrDefault();
                 if (validEmail == null)
                 {
-                    if (userData != null)
+                    // Encrypt password with MD5.
+                    userData.Password = EncryptPassword(userData.Password);
+                    // Add data to the database using FundooContext.
+                    this.fundooContext.Add(userData);
+                    // Saving data in database.
+                    this.fundooContext.SaveChanges();
+                    return new ResponseModel<RegisterModel>()
                     {
-                        // Encrypt password with MD5.
-                        userData.Password = EncryptPassword(userData.Password);
-                        // Add data to the database using FundooContext.
-                        this.fundooContext.Add(userData);
-                        // Saving data in database.
-                        this.fundooContext.SaveChanges();
-                        return "Registration Successful";
-                    }
-                    return "Registration UnSuccessful";
+                        Status = true,
+                        Message = "Registration Successful",
+                        Data = userData
+                    };
                 }
-                return "Email Id Already Exists";
+                return new ResponseModel<RegisterModel>()
+                {
+                    Status = true,
+                    Message = "Email Id Already Exists",
+                    Data = userData
+                };
             }
             catch (Exception e)
             {
@@ -64,7 +70,7 @@ namespace RepositoryLayer.Repository
             return encryptData.ToString();
         }
 
-        public string Login(LoginModel userData)
+        public ResponseModel<LoginModel> Login(LoginModel userData)
         {
             try
             {
@@ -74,11 +80,26 @@ namespace RepositoryLayer.Repository
                     userData.Password = EncryptPassword(userData.Password);
                     if (userData.Password == validEmail.Password)
                     {
-                        return "Login Successful";
+                        return new ResponseModel<LoginModel>()
+                        {
+                            Status = true,
+                            Message = "Login Successful",
+                            Data = userData
+                        };
                     }
-                    return "Incorrect Password";
+                    return new ResponseModel<LoginModel>()
+                    {
+                        Status = false,
+                        Message = "Incorrect Password",
+                        Data = userData
+                    };
                 }
-                return "Email not Registered";
+                return new ResponseModel<LoginModel>()
+                {
+                    Status = false,
+                    Message = "Email not Registered",
+                    Data = userData
+                };
             }
             catch (Exception e)
             {

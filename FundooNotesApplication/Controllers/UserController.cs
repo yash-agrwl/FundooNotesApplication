@@ -20,14 +20,14 @@ namespace FundooNotesApplication.Controllers
         {
             try
             {
-                string result = this.manager.Register(userdata);
-                if (result.Equals("Registration Successful"))
+                var result = this.manager.Register(userdata);
+                if (result.Status == true)
                 {
-                    return this.Ok(new ResponseModel<string>() { Status = true, Message = result, Data = "Session Data" });
+                    return this.Ok(result);
                 }
                 else
                 {
-                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = result });
+                    return this.BadRequest(result);
                 }
             }
             catch (Exception ex)
@@ -42,14 +42,14 @@ namespace FundooNotesApplication.Controllers
         {
             try
             {
-                string result = this.manager.Login(userData);
-                if (result.Equals("Login Successful"))
+                var result = this.manager.Login(userData);
+                if (result.Status == true)
                 {
-                    return this.Ok(new { Status = true, Message = result, Data = result });
+                    return this.Ok(result);
                 }
                 else
                 {
-                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = result });
+                    return this.BadRequest(result);
                 }
             }
             catch (Exception ex)

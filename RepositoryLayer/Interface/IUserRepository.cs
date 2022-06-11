@@ -8,8 +8,9 @@ namespace RepositoryLayer.Interface
         IConfiguration Configuration { get; }
 
         string EncryptPassword(string password);
-        string Register(RegisterModel userData);
 
-        string Login(LoginModel userdata);
+        ResponseModel<RegisterModel> Register(RegisterModel userData);
+
+        ResponseModel<LoginModel> Login(LoginModel userdata);
     }
 }

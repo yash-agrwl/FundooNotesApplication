@@ -18,7 +18,7 @@ namespace BusinessLayer.Manager
             this.Configuration = configuration;
         }
 
-        public string Register(RegisterModel userdata)
+        public ResponseModel<RegisterModel> Register(RegisterModel userdata)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace BusinessLayer.Manager
             }
         }
 
-        public string Login(LoginModel userdata)
+        public ResponseModel<LoginModel> Login(LoginModel userdata)
         {
             try
             {
