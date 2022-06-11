@@ -12,5 +12,7 @@ namespace RepositoryLayer.Interface
         ResponseModel<RegisterModel> Register(RegisterModel userData);
 
         ResponseModel<LoginModel> Login(LoginModel userdata);
+
+        ResponseModel<ResetPasswordModel> ResetPassword(ResetPasswordModel userData);
     }
 }

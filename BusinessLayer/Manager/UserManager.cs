@@ -41,5 +41,17 @@ namespace BusinessLayer.Manager
                 throw new Exception(e.Message);
             }
         }
+
+        public ResponseModel<ResetPasswordModel> ResetPassword(ResetPasswordModel userData)
+        {
+            try
+            {
+                return this.repository.ResetPassword(userData);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

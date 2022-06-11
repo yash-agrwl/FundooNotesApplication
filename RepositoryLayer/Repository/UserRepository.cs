@@ -41,9 +41,10 @@ namespace RepositoryLayer.Repository
                         Data = userData
                     };
                 }
+                userData.UserID = validEmail.UserID;
                 return new ResponseModel<RegisterModel>()
                 {
-                    Status = true,
+                    Status = false,
                     Message = "Email Id Already Exists",
                     Data = userData
                 };
@@ -98,6 +99,38 @@ namespace RepositoryLayer.Repository
                 {
                     Status = false,
                     Message = "Email not Registered",
+                    Data = userData
+                };
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public ResponseModel<ResetPasswordModel> ResetPassword(ResetPasswordModel userData)
+        {
+            try
+            {
+                var validEmail = this.fundooContext.Users.Where(x => x.Email == userData.Email).FirstOrDefault();
+                if (validEmail != null)
+                {
+                    validEmail.Password = EncryptPassword(userData.Password);
+                    // Add data to the database using userContext.
+                    this.fundooContext.Update(validEmail);
+                    // Saving data in database.
+                    this.fundooContext.SaveChanges();
+                    return new ResponseModel<ResetPasswordModel>()
+                    {
+                        Status = true,
+                        Message = "Password Reset Successful",
+                        Data = userData
+                    };
+                }
+                return new ResponseModel<ResetPasswordModel>()
+                {
+                    Status = false,
+                    Message = "Wrong Email Entered",
                     Data = userData
                 };
             }
