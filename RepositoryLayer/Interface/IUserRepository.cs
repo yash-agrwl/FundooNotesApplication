@@ -9,5 +9,7 @@ namespace RepositoryLayer.Interface
 
         string EncryptPassword(string password);
         string Register(RegisterModel userData);
+
+        string Login(LoginModel userdata);
     }
 }

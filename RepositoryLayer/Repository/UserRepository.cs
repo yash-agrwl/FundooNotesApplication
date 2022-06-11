@@ -63,5 +63,27 @@ namespace RepositoryLayer.Repository
             }
             return encryptData.ToString();
         }
+
+        public string Login(LoginModel userData)
+        {
+            try
+            {
+                var validEmail = this.fundooContext.Users.Where(x => x.Email == userData.Email).FirstOrDefault();
+                if (validEmail != null)
+                {
+                    userData.Password = EncryptPassword(userData.Password);
+                    if (userData.Password == validEmail.Password)
+                    {
+                        return "Login Successful";
+                    }
+                    return "Incorrect Password";
+                }
+                return "Email not Registered";
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

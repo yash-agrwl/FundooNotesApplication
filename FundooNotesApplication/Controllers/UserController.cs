@@ -35,5 +35,27 @@ namespace FundooNotesApplication.Controllers
                 return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
             }
         }
+
+        [HttpPost]
+        [Route("api/login")]
+        public IActionResult Login([FromBody] LoginModel userData)
+        {
+            try
+            {
+                string result = this.manager.Login(userData);
+                if (result.Equals("Login Successful"))
+                {
+                    return this.Ok(new { Status = true, Message = result, Data = result });
+                }
+                else
+                {
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = result });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
+            }
+        }
     }
 }

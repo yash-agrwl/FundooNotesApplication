@@ -8,5 +8,7 @@ namespace BusinessLayer.Interface
         IConfiguration Configuration { get; }
 
         string Register(RegisterModel userdata);
+
+        string Login(LoginModel userdata);
     }
 }

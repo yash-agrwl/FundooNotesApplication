@@ -29,5 +29,17 @@ namespace BusinessLayer.Manager
                 throw new Exception(ex.Message);
             }
         }
+
+        public string Login(LoginModel userdata)
+        {
+            try
+            {
+                return this.repository.Login(userdata);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }
