@@ -1,9 +1,12 @@
 ﻿using CommonLayer;
+using Experimental.System.Messaging;
 using Microsoft.Extensions.Configuration;
 using RepositoryLayer.Context;
 using RepositoryLayer.Interface;
 using System;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -138,6 +141,79 @@ namespace RepositoryLayer.Repository
             {
                 throw new Exception(e.Message);
             }
+        }
+
+        public string ForgotPassword(string email)
+        {
+            try
+            {
+                var validEmail = this.fundooContext.Users.Where(x => x.Email == email).FirstOrDefault();
+                if (validEmail != null)
+                {
+                    this.SendMSMQ("Link for resetting the password");
+                    string linkToBeSend = this.ReceiveMSMQ();
+                    this.SendMailUsingSMTP(email, linkToBeSend);
+                    return "Email Sent Successfully";
+                }
+                return "Email Not Registered";
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        private void SendMSMQ(string url)
+        {
+            MessageQueue messageQueue = this.QueueDetail();
+            Message message = new Message();
+            message.Formatter = new BinaryMessageFormatter();
+            message.Body = url;
+            messageQueue.Label = "url link";
+            messageQueue.Send(message);
+        }
+
+        private MessageQueue QueueDetail()
+        {
+            MessageQueue messageQueue;
+            if (MessageQueue.Exists(@".\Private$\ResetPasswordQueue"))
+            {
+                messageQueue = new MessageQueue(@".\Private$\ResetPasswordQueue");
+            }
+            else
+            {
+                messageQueue = MessageQueue.Create(@".\Private$\ResetPasswordQueue");
+            }
+
+            return messageQueue;
+        }
+
+        private string ReceiveMSMQ()
+        {
+            ////for reading from MSMQ
+            var receiveQueue = new MessageQueue(@".\Private$\ResetPasswordQueue");
+            var receiveMsg = receiveQueue.Receive();
+            receiveMsg.Formatter = new BinaryMessageFormatter();
+            return receiveMsg.Body.ToString();
+        }
+
+        private void SendMailUsingSMTP(string email, string message)
+        {
+            MailMessage mailMessage = new MailMessage();          
+            mailMessage.From = new MailAddress("temp.mailserver2022@gmail.com");
+            mailMessage.To.Add(new MailAddress(email));
+            mailMessage.Subject = "Link to reset you password for fundoo Application";
+            mailMessage.IsBodyHtml = true;
+            mailMessage.Body = message;
+
+            SmtpClient client = new SmtpClient();
+            client.EnableSsl = true;
+            client.UseDefaultCredentials = false;
+            client.Credentials = new NetworkCredential("temp.firstmail@gmail.com", "tempmail2022");
+            client.Host = "smtp.gmail.com";
+            client.Port = 587;
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            client.Send(mailMessage);
         }
     }
 }

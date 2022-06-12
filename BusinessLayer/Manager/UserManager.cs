@@ -53,5 +53,17 @@ namespace BusinessLayer.Manager
                 throw new Exception(e.Message);
             }
         }
+
+        public string ForgotPassword(string email)
+        {
+            try
+            {
+                return this.repository.ForgotPassword(email);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }
