@@ -200,7 +200,7 @@ namespace RepositoryLayer.Repository
         private void SendMailUsingSMTP(string email, string message)
         {
             MailMessage mailMessage = new MailMessage();          
-            mailMessage.From = new MailAddress("temp.mailserver2022@gmail.com");
+            mailMessage.From = new MailAddress(this.Configuration["Credentials:EmailId"]);
             mailMessage.To.Add(new MailAddress(email));
             mailMessage.Subject = "Link to reset you password for fundoo Application";
             mailMessage.IsBodyHtml = true;
@@ -209,7 +209,8 @@ namespace RepositoryLayer.Repository
             SmtpClient client = new SmtpClient();
             client.EnableSsl = true;
             client.UseDefaultCredentials = false;
-            client.Credentials = new NetworkCredential("temp.firstmail@gmail.com", "tempmail2022");
+            client.Credentials = new NetworkCredential(this.Configuration["Credentials:EmailId"],
+                                                       this.Configuration["Credentials:EmailPassword"]);
             client.Host = "smtp.gmail.com";
             client.Port = 587;
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
