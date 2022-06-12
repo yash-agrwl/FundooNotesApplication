@@ -9,6 +9,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace RepositoryLayer.Repository
 {
@@ -143,7 +144,7 @@ namespace RepositoryLayer.Repository
             }
         }
 
-        public string ForgotPassword(string email)
+        public Task<string> ForgotPassword(string email)
         {
             try
             {
@@ -153,9 +154,9 @@ namespace RepositoryLayer.Repository
                     this.SendMSMQ("Link for resetting the password");
                     string linkToBeSend = this.ReceiveMSMQ();
                     this.SendMailUsingSMTP(email, linkToBeSend);
-                    return "Email Sent Successfully";
+                    return Task.FromResult("Email Sent Successfully");
                 }
-                return "Email Not Registered";
+                return Task.FromResult("Email Not Registered");
             }
             catch (Exception e)
             {

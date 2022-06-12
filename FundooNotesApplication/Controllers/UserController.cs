@@ -2,6 +2,7 @@
 using CommonLayer;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading.Tasks;
 
 namespace FundooNotesApplication.Controllers
 {
@@ -82,11 +83,11 @@ namespace FundooNotesApplication.Controllers
 
         [HttpPost]
         [Route("api/forgotPassword")]
-        public IActionResult ForgotPassword(string email)
+        public async Task<IActionResult> ForgotPassword(string email)
         {
             try
             {
-                string result = this.manager.ForgotPassword(email);
+                string result = await this.manager.ForgotPassword(email);
                 if (result.Equals("Email Sent Successfully"))
                 {
                     return this.Ok(new ResponseModel<string>() { Status = true, Message = result, Data = email });

@@ -1,5 +1,6 @@
 ﻿using CommonLayer;
 using Microsoft.Extensions.Configuration;
+using System.Threading.Tasks;
 
 namespace BusinessLayer.Interface
 {
@@ -13,6 +14,6 @@ namespace BusinessLayer.Interface
 
         ResponseModel<ResetPasswordModel> ResetPassword(ResetPasswordModel userData);
 
-        string ForgotPassword(string email);
+        Task<string> ForgotPassword(string email);
     }
 }

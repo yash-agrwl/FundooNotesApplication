@@ -3,6 +3,7 @@ using CommonLayer;
 using Microsoft.Extensions.Configuration;
 using RepositoryLayer.Interface;
 using System;
+using System.Threading.Tasks;
 
 namespace BusinessLayer.Manager
 {
@@ -54,11 +55,11 @@ namespace BusinessLayer.Manager
             }
         }
 
-        public string ForgotPassword(string email)
+        public async Task<string> ForgotPassword(string email)
         {
             try
             {
-                return this.repository.ForgotPassword(email);
+                return await this.repository.ForgotPassword(email);
             }
             catch (Exception e)
             {

@@ -1,5 +1,6 @@
 ﻿using CommonLayer;
 using Microsoft.Extensions.Configuration;
+using System.Threading.Tasks;
 
 namespace RepositoryLayer.Interface
 {
@@ -15,6 +16,6 @@ namespace RepositoryLayer.Interface
 
         ResponseModel<ResetPasswordModel> ResetPassword(ResetPasswordModel userData);
 
-        string ForgotPassword(string email);
+        Task<string> ForgotPassword(string email);
     }
 }
