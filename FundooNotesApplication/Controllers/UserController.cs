@@ -87,7 +87,7 @@ namespace FundooNotesApplication.Controllers
             try
             {
                 string result = this.manager.ForgotPassword(email);
-                if (result.Equals("Email send Successfully"))
+                if (result.Equals("Email Sent Successfully"))
                 {
                     return this.Ok(new ResponseModel<string>() { Status = true, Message = result, Data = email });
                 }

@@ -202,7 +202,7 @@ namespace RepositoryLayer.Repository
             MailMessage mailMessage = new MailMessage();          
             mailMessage.From = new MailAddress(this.Configuration["Credentials:EmailId"]);
             mailMessage.To.Add(new MailAddress(email));
-            mailMessage.Subject = "Link to reset you password for fundoo Application";
+            mailMessage.Subject = "Link to reset your password for fundoo Application";
             mailMessage.IsBodyHtml = true;
             mailMessage.Body = message;
 
