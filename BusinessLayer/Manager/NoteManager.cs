@@ -3,6 +3,7 @@ using CommonLayer;
 using Microsoft.Extensions.Configuration;
 using RepositoryLayer.Interface;
 using System;
+using System.Threading.Tasks;
 
 namespace BusinessLayer.Manager
 {
@@ -23,6 +24,18 @@ namespace BusinessLayer.Manager
             try
             {
                 return this._repository.CreateNote(noteData);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ResponseModel<NotesModel>> EditNotes(NotesEditModel noteData)
+        {
+            try
+            {
+                return await this._repository.EditNotes(noteData);
             }
             catch (Exception ex)
             {

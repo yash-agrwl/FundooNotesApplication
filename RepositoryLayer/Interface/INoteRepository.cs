@@ -1,5 +1,6 @@
 ﻿using CommonLayer;
 using Microsoft.Extensions.Configuration;
+using System.Threading.Tasks;
 
 namespace RepositoryLayer.Interface
 {
@@ -8,5 +9,7 @@ namespace RepositoryLayer.Interface
         IConfiguration Configuration { get; }
 
         ResponseModel<NotesModel> CreateNote(NotesModel noteData);
+
+        Task<ResponseModel<NotesModel>> EditNotes(NotesEditModel noteData);
     }
 }

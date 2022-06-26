@@ -2,6 +2,7 @@
 using CommonLayer;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading.Tasks;
 
 namespace FundooNotesApplication.Controllers
 { 
@@ -23,6 +24,26 @@ namespace FundooNotesApplication.Controllers
             try
             {
                 var result = this._manager.CreateNote(noteData);
+                if (result.Status == true)
+                {
+                    return this.Ok(result);
+                }
+
+                return this.BadRequest(result);
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        [Route("Edit")]
+        public async Task<IActionResult> EditNotes(NotesEditModel noteData)
+        {
+            try
+            {
+                var result = await this._manager.EditNotes(noteData);
                 if (result.Status == true)
                 {
                     return this.Ok(result);

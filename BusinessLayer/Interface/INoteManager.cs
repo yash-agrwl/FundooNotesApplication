@@ -1,5 +1,6 @@
 ﻿using CommonLayer;
 using Microsoft.Extensions.Configuration;
+using System.Threading.Tasks;
 
 namespace BusinessLayer.Interface
 {
@@ -8,5 +9,7 @@ namespace BusinessLayer.Interface
         IConfiguration Configuration { get; }
 
         ResponseModel<NotesModel> CreateNote(NotesModel noteData);
+
+        Task<ResponseModel<NotesModel>> EditNotes(NotesEditModel noteData);
     }
 }
