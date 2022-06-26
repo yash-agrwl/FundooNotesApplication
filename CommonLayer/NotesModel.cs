@@ -17,8 +17,10 @@ namespace CommonLayer
         [JsonIgnore]
         public virtual RegisterModel User { get; set; }
 
+        [DefaultValue(null)]
         public string Title { get; set; }
 
+        [DefaultValue(null)]
         public string Body { get; set; }
 
         [DefaultValue(false)]
@@ -36,6 +38,7 @@ namespace CommonLayer
         [DefaultValue("white")]
         public string Color { get; set; }
 
+        [DefaultValue(null)]
         public string AddedImage { get; set; }
     }
 }
