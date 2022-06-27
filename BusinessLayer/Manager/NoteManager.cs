@@ -68,6 +68,18 @@ namespace BusinessLayer.Manager
             }
         }
 
+        public ResponseModel<List<NotesModel>> GetArchive(int userId)
+        {
+            try
+            {
+                return this._repository.GetArchive(userId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public ResponseModel<NotesModel> TogglePin(int noteId, int userId)
         {
             try

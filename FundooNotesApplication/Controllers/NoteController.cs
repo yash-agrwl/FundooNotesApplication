@@ -99,6 +99,27 @@ namespace FundooNotesApplication.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetArchive")]
+        public IActionResult GetArchive(int userId)
+        {
+            try
+            {
+                var result = this._manager.GetArchive(userId);
+
+                if (result.Status == true)
+                {
+                    return this.Ok(result);
+                }
+
+                return this.BadRequest(result);
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
+            }
+        }
+
         [HttpPatch]
         [Route("TogglePin")]
         public IActionResult TogglePin(int noteId, int userId)

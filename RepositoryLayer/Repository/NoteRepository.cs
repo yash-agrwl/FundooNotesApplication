@@ -179,6 +179,33 @@ namespace RepositoryLayer.Repository
             }
         }
 
+        public ResponseModel<List<NotesModel>> GetArchive(int userId)
+        {
+            try
+            {
+                var result = new ResponseModel<List<NotesModel>>();
+
+                List<NotesModel> noteList = (from note in this._fundooContext.Notes
+                                             where note.UserId == userId && note.Archive == true && note.Trash == false
+                                             select note).ToList();
+
+                if (noteList.Count > 0)
+                {
+                    result.Status = true;
+                    result.Message = $"{noteList.Count} Notes retrieved Successfully";
+                    result.Data = noteList;
+                    return result;
+                }
+
+                result.Message = "No Notes available";
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public ResponseModel<NotesModel> TogglePin(int noteId, int userId)
         {
             try

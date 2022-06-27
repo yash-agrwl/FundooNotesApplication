@@ -20,5 +20,7 @@ namespace BusinessLayer.Interface
         ResponseModel<NotesModel> SetColor(int noteId, int userId, string noteColor);
 
         ResponseModel<List<NotesModel>> GetNotes(int userId);
+
+        ResponseModel<List<NotesModel>> GetArchive(int userId);
     }
 }
