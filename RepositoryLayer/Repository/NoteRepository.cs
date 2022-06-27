@@ -280,5 +280,36 @@ namespace RepositoryLayer.Repository
                 throw new Exception(ex.Message);
             }
         }
+
+        public ResponseModel<NotesModel> MoveToTrash(int noteId, int userId)
+        {
+            try
+            {
+                var result = new ResponseModel<NotesModel>();
+                var existNote = this._fundooContext.Notes.Where(x => x.UserId == userId &&
+                                                                     x.NoteId == noteId).FirstOrDefault();
+                if (existNote != null)
+                {
+                    existNote.Pin = false;
+                    existNote.Archive = false;
+                    existNote.Trash = true;
+
+                    this._fundooContext.Update(existNote);
+                    this._fundooContext.SaveChanges();
+
+                    result.Status = true;
+                    result.Message = "Note trashed";
+                    result.Data = existNote;
+                    return result;
+                }
+
+                result.Message = "Note not available";
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

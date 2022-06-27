@@ -161,5 +161,26 @@ namespace FundooNotesApplication.Controllers
                 return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
             }
         }
+
+        [HttpPatch]
+        [Route("MoveToTrash")]
+        public IActionResult MoveToTrash(int noteId, int userId)
+        {
+            try
+            {
+                var result = this._manager.MoveToTrash(noteId, userId);
+
+                if (result.Status == true)
+                {
+                    return this.Ok(result);
+                }
+
+                return this.BadRequest(result);
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
+            }
+        }
     }
 }
