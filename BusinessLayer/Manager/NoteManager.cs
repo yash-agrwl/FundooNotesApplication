@@ -42,5 +42,17 @@ namespace BusinessLayer.Manager
                 throw new Exception(ex.Message);
             }
         }
+
+        public ResponseModel<NotesModel> ToggleArchive(int noteId, int userId)
+        {
+            try
+            {
+                return this._repository.ToggleArchive(noteId, userId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

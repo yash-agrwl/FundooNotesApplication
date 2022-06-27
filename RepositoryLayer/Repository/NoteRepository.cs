@@ -88,5 +88,41 @@ namespace RepositoryLayer.Repository
                 throw new Exception(ex.Message);
             }
         }
+
+        public ResponseModel<NotesModel> ToggleArchive(int noteId, int userId)
+        {
+            try
+            {
+                var result = new ResponseModel<NotesModel>();
+                var existNote = this._fundooContext.Notes.Where(x => x.UserId == userId &&
+                                                                     x.NoteId == noteId).FirstOrDefault();
+                if (existNote != null)
+                {
+                    if (existNote.Archive)
+                        existNote.Archive = false;
+                    else
+                    {
+                        if (existNote.Pin)
+                            existNote.Pin = false;
+                        existNote.Archive = true;
+                    }
+                    this._fundooContext.Update(existNote);
+                    this._fundooContext.SaveChanges();
+
+                    result.Status = true;
+                    result.Message = "Successfully changed Note Archive Status";
+                    result.Data = existNote;
+
+                    return result;
+                }
+
+                result.Message = "Unsuccessful to change Note Archive Status";
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

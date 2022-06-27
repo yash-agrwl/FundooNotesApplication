@@ -11,5 +11,7 @@ namespace BusinessLayer.Interface
         ResponseModel<NotesModel> CreateNote(NotesModel noteData);
 
         Task<ResponseModel<NotesModel>> EditNotes(NotesEditModel noteData);
+
+        ResponseModel<NotesModel> ToggleArchive(int noteId, int userId);
     }
 }
