@@ -526,5 +526,35 @@ namespace RepositoryLayer.Repository
                 throw new Exception(ex.Message);
             }
         }
+
+        public ResponseModel<NotesModel> RemoveImage(int noteId, int userId)
+        {
+            try
+            {
+                var result = new ResponseModel<NotesModel>();
+                var existNote = this._fundooContext.Notes.Where(x => x.UserId == userId &&
+                                                                     x.NoteId == noteId &&
+                                                                     x.AddedImage != null).FirstOrDefault();
+                if (existNote != null)
+                {
+                    existNote.AddedImage = null;
+
+                    this._fundooContext.Notes.Update(existNote);
+                    this._fundooContext.SaveChanges();
+
+                    result.Status = true;
+                    result.Message = "Image removed Successfully";
+                    result.Data = existNote;
+                    return result;
+                }
+
+                result.Message = "No image available";
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

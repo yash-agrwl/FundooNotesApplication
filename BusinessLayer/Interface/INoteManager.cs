@@ -39,5 +39,7 @@ namespace BusinessLayer.Interface
         ResponseModel<NotesModel> DeleteReminder(int noteId, int userId);
 
         ResponseModel<NotesModel> AddImage(int noteId, int userId, IFormFile form);
+
+        ResponseModel<NotesModel> RemoveImage(int noteId, int userId);
     }
 }

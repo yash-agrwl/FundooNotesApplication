@@ -200,5 +200,17 @@ namespace BusinessLayer.Manager
                 throw new Exception(ex.Message);
             }
         }
+
+        public ResponseModel<NotesModel> RemoveImage(int noteId, int userId)
+        {
+            try
+            {
+                return this._repository.RemoveImage(noteId, userId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
