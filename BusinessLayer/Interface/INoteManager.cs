@@ -34,5 +34,7 @@ namespace BusinessLayer.Interface
         ResponseModel<NotesModel> AddReminder(int noteId, int userId, string remind);
 
         ResponseModel<List<NotesModel>> GetReminders(int userId);
+
+        ResponseModel<NotesModel> DeleteReminder(int noteId, int userId);
     }
 }

@@ -287,5 +287,26 @@ namespace FundooNotesApplication.Controllers
                 return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
             }
         }
+
+        [HttpPatch]
+        [Route("DeleteReminder")]
+        public IActionResult DeleteReminder(int noteId, int userId)
+        {
+            try
+            {
+                var result = this._manager.DeleteReminder(noteId, userId);
+
+                if (result.Status == true)
+                {
+                    return this.Ok(result);
+                }
+
+                return this.BadRequest(result);
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
+            }
+        }
     }
 }

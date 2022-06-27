@@ -175,5 +175,17 @@ namespace BusinessLayer.Manager
                 throw new Exception(ex.Message);
             }
         }
+
+        public ResponseModel<NotesModel> DeleteReminder(int noteId, int userId)
+        {
+            try
+            {
+                return this._repository.DeleteReminder(noteId, userId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

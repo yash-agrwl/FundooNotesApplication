@@ -453,5 +453,35 @@ namespace RepositoryLayer.Repository
                 throw new Exception(ex.Message);
             }
         }
+
+        public ResponseModel<NotesModel> DeleteReminder(int noteId, int userId)
+        {
+            try
+            {
+                var result = new ResponseModel<NotesModel>();
+                var existNote = this._fundooContext.Notes.Where(x => x.UserId == userId &&
+                                                                     x.NoteId == noteId &&
+                                                                     x.Reminder != null).FirstOrDefault();
+                if (existNote != null)
+                {
+                    existNote.Reminder = null;
+
+                    this._fundooContext.Notes.Update(existNote);
+                    this._fundooContext.SaveChanges();
+
+                    result.Status = true;
+                    result.Message = "Reminder deleted";
+                    result.Data = existNote;
+                    return result;
+                }
+
+                result.Message = "No Reminder available";
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
