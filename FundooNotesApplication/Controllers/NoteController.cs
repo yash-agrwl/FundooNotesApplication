@@ -58,12 +58,33 @@ namespace FundooNotesApplication.Controllers
         }
 
         [HttpPatch]
-        [Route("toggleArchive/{noteId}")]
+        [Route("ToggleArchive/{noteId}")]
         public IActionResult ToggleArchive(int noteId, int userId)
         {
             try
             {
                 var result = this._manager.ToggleArchive(noteId, userId);
+
+                if (result.Status == true)
+                {
+                    return this.Ok(result);
+                }
+
+                return this.BadRequest(result);
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        [Route("TogglePin")]
+        public IActionResult TogglePin(int noteId, int userId)
+        {
+            try
+            {
+                var result = this._manager.TogglePin(noteId, userId);
 
                 if (result.Status == true)
                 {

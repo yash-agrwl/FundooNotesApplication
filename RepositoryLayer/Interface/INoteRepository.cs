@@ -13,5 +13,7 @@ namespace RepositoryLayer.Interface
         Task<ResponseModel<NotesModel>> EditNotes(NotesEditModel noteData);
 
         ResponseModel<NotesModel> ToggleArchive(int noteId, int userId);
+
+        ResponseModel<NotesModel> TogglePin(int noteId, int userId);
     }
 }

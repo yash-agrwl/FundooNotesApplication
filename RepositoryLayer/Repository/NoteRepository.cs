@@ -66,21 +66,27 @@ namespace RepositoryLayer.Repository
 
                 if (existNote != null)
                 {
-                    if (noteData.Body != null)
-                        existNote.Body = noteData.Body;
-                    if (noteData.Title != null)
-                        existNote.Title = noteData.Title;
+                    if(existNote.Trash == false)
+                    {
+                        if (noteData.Body != null)
+                            existNote.Body = noteData.Body;
+                        if (noteData.Title != null)
+                            existNote.Title = noteData.Title;
 
-                    this._fundooContext.Update(existNote);
-                    await this._fundooContext.SaveChangesAsync();
+                        this._fundooContext.Update(existNote);
+                        await this._fundooContext.SaveChangesAsync();
 
-                    result.Status = true;
-                    result.Message = "Note Successfully Edited";
+                        result.Status = true;
+                        result.Message = "Note Successfully Edited";
 
+                        return result;
+                    }
+
+                    result.Message = "Can't edit in Recycle Bin";
                     return result;
                 }
 
-                result.Message = "Unsuccessful to edit Note";
+                result.Message = "Note not available for the user";
                 return result;
             }
             catch (Exception ex)
@@ -95,7 +101,8 @@ namespace RepositoryLayer.Repository
             {
                 var result = new ResponseModel<NotesModel>();
                 var existNote = this._fundooContext.Notes.Where(x => x.UserId == userId &&
-                                                                     x.NoteId == noteId).FirstOrDefault();
+                                                                     x.NoteId == noteId &&
+                                                                     x.Trash == false).FirstOrDefault();
                 if (existNote != null)
                 {
                     if (existNote.Archive)
@@ -117,6 +124,42 @@ namespace RepositoryLayer.Repository
                 }
 
                 result.Message = "Unsuccessful to change Note Archive Status";
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public ResponseModel<NotesModel> TogglePin(int noteId, int userId)
+        {
+            try
+            {
+                var result = new ResponseModel<NotesModel>();
+                var existNote = this._fundooContext.Notes.Where(x => x.UserId == userId &&
+                                                                     x.NoteId == noteId &&
+                                                                     x.Trash == false).FirstOrDefault();
+                if (existNote != null)
+                {
+                    if (existNote.Pin)
+                        existNote.Pin = false;
+                    else
+                    {
+                        if (existNote.Archive)
+                            existNote.Archive = false;
+                        existNote.Pin = true;
+                    }                       
+
+                    this._fundooContext.Update(existNote);
+                    this._fundooContext.SaveChanges();
+
+                    result.Status = true;
+                    result.Message = "Successfully changed Note Pinned Status";
+                    result.Data = existNote;
+                }
+
+                result.Message = "Unsuccessful to change Note Pinned Status";
                 return result;
             }
             catch (Exception ex)
