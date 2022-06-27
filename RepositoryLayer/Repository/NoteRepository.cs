@@ -106,20 +106,28 @@ namespace RepositoryLayer.Repository
                 if (existNote != null)
                 {
                     if (existNote.Archive)
+                    {
                         existNote.Archive = false;
+                        result.Message = "Note Unarchived";
+                    }
                     else
                     {
-                        if (existNote.Pin)
-                            existNote.Pin = false;
                         existNote.Archive = true;
+
+                        if (existNote.Pin)
+                        {
+                            existNote.Pin = false;
+                            result.Message = "Note archived and unpinned";
+                        }
+                        else
+                            result.Message = "Note archived";
                     }
+
                     this._fundooContext.Update(existNote);
                     this._fundooContext.SaveChanges();
 
                     result.Status = true;
-                    result.Message = "Successfully changed Note Archive Status";
                     result.Data = existNote;
-
                     return result;
                 }
 
@@ -143,23 +151,62 @@ namespace RepositoryLayer.Repository
                 if (existNote != null)
                 {
                     if (existNote.Pin)
+                    {
                         existNote.Pin = false;
+                        result.Message = "Note unpinned";
+                    }
                     else
                     {
-                        if (existNote.Archive)
-                            existNote.Archive = false;
                         existNote.Pin = true;
+
+                        if (existNote.Archive)
+                        {
+                            existNote.Archive = false;
+                            result.Message = "Note pinned and unarchived";
+                        }
+                        else
+                            result.Message = "Note pinned";
                     }                       
 
                     this._fundooContext.Update(existNote);
                     this._fundooContext.SaveChanges();
 
                     result.Status = true;
-                    result.Message = "Successfully changed Note Pinned Status";
                     result.Data = existNote;
+                    return result;
                 }
 
                 result.Message = "Unsuccessful to change Note Pinned Status";
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public ResponseModel<NotesModel> SetColor(int noteId, int userId, string noteColor)
+        {
+            try
+            {
+                var result = new ResponseModel<NotesModel>();
+                var existNote = this._fundooContext.Notes.Where(x => x.UserId == userId &&
+                                                                     x.NoteId == noteId &&
+                                                                     x.Trash == false).FirstOrDefault();
+                if (existNote != null)
+                {
+                    existNote.Color = noteColor;
+                    this._fundooContext.Update(existNote);
+                    this._fundooContext.SaveChanges();
+
+                    result.Status = true;
+                    result.Message = "Successfully changed Note Colour";
+                    result.Data = existNote;
+
+                    return result;
+                }
+
+                result.Message = "Unsuccessful to change Note Colour";
                 return result;
             }
             catch (Exception ex)

@@ -15,5 +15,7 @@ namespace BusinessLayer.Interface
         ResponseModel<NotesModel> ToggleArchive(int noteId, int userId);
 
         ResponseModel<NotesModel> TogglePin(int noteId, int userId);
+
+        ResponseModel<NotesModel> SetColor(int noteId, int userId, string noteColor);
     }
 }

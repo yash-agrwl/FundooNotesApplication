@@ -78,13 +78,34 @@ namespace FundooNotesApplication.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPatch]
         [Route("TogglePin")]
         public IActionResult TogglePin(int noteId, int userId)
         {
             try
             {
                 var result = this._manager.TogglePin(noteId, userId);
+
+                if (result.Status == true)
+                {
+                    return this.Ok(result);
+                }
+
+                return this.BadRequest(result);
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
+            }
+        }
+
+        [HttpPatch]
+        [Route("SetColor")]
+        public IActionResult SetColor(int noteId, int userId, string noteColor)
+        {
+            try
+            {
+                var result = this._manager.SetColor(noteId, userId, noteColor);
 
                 if (result.Status == true)
                 {

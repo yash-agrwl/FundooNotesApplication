@@ -66,5 +66,17 @@ namespace BusinessLayer.Manager
                 throw new Exception(ex.Message);
             }
         }
+
+        public ResponseModel<NotesModel> SetColor(int noteId, int userId, string noteColor)
+        {
+            try
+            {
+                return this._repository.SetColor(noteId, userId, noteColor);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
