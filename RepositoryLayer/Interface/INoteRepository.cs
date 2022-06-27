@@ -32,5 +32,7 @@ namespace RepositoryLayer.Interface
         ResponseModel<NotesModel> DeleteForever(int noteId, int userId);
 
         ResponseModel<NotesModel> AddReminder(int noteId, int userId, string remind);
+
+        ResponseModel<List<NotesModel>> GetReminders(int userId);
     }
 }

@@ -426,5 +426,32 @@ namespace RepositoryLayer.Repository
                 throw new Exception(ex.Message);
             }
         }
+
+        public ResponseModel<List<NotesModel>> GetReminders(int userId)
+        {
+            try
+            {
+                var result = new ResponseModel<List<NotesModel>>();
+
+                List<NotesModel> noteList = (from note in this._fundooContext.Notes
+                                             where note.UserId == userId && note.Reminder != null
+                                             select note).ToList();
+
+                if (noteList.Count > 0)
+                {
+                    result.Status = true;
+                    result.Message = $"{noteList.Count} Notes retrieved Successfully";
+                    result.Data = noteList;
+                    return result;
+                }
+
+                result.Message = "No Reminders available";
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
