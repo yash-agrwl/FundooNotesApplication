@@ -245,5 +245,26 @@ namespace FundooNotesApplication.Controllers
                 return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
             }
         }
+
+        [HttpPatch]
+        [Route("AddReminder")]
+        public IActionResult AddReminder(int noteId, int userId, string remind)
+        {
+            try
+            {
+                var result = this._manager.AddReminder(noteId, userId, remind);
+
+                if (result.Status == true)
+                {
+                    return this.Ok(result);
+                }
+
+                return this.BadRequest(result);
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
+            }
+        }
     }
 }

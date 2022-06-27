@@ -30,5 +30,7 @@ namespace BusinessLayer.Interface
         ResponseModel<NotesModel> RestoreNote(int noteId, int userId);
 
         ResponseModel<NotesModel> DeleteForever(int noteId, int userId);
+
+        ResponseModel<NotesModel> AddReminder(int noteId, int userId, string remind);
     }
 }

@@ -151,5 +151,17 @@ namespace BusinessLayer.Manager
                 throw new Exception(ex.Message);
             }
         }
+
+        public ResponseModel<NotesModel> AddReminder(int noteId, int userId, string remind)
+        {
+            try
+            {
+                return this._repository.AddReminder(noteId, userId, remind);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
