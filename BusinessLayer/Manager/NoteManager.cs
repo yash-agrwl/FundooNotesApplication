@@ -115,5 +115,17 @@ namespace BusinessLayer.Manager
                 throw new Exception(ex.Message);
             }
         }
+
+        public ResponseModel<List<NotesModel>> GetTrash(int userId)
+        {
+            try
+            {
+                return this._repository.GetTrash(userId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
