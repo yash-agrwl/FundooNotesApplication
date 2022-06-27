@@ -3,6 +3,7 @@ using CommonLayer;
 using Microsoft.Extensions.Configuration;
 using RepositoryLayer.Interface;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BusinessLayer.Manager
@@ -24,6 +25,18 @@ namespace BusinessLayer.Manager
             try
             {
                 return this._repository.CreateNote(noteData);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public ResponseModel<List<NotesModel>> GetNotes(int userId)
+        {
+            try
+            {
+                return this._repository.GetNotes(userId);
             }
             catch (Exception ex)
             {

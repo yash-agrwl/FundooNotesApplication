@@ -37,6 +37,27 @@ namespace FundooNotesApplication.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetNotes")]
+        public IActionResult GetNotes(int userId)
+        {
+            try
+            {
+                var result = this._manager.GetNotes(userId);
+
+                if (result.Status == true)
+                {
+                    return this.Ok(result);
+                }
+
+                return this.BadRequest(result);
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
+            }
+        }
+
         [HttpPatch]
         [Route("Edit")]
         public async Task<IActionResult> EditNotes(NotesEditModel noteData)

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using RepositoryLayer.Context;
 using RepositoryLayer.Interface;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -47,6 +48,44 @@ namespace RepositoryLayer.Repository
                 }
 
                 result.Message = "Unsuccessful to create Note";
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public ResponseModel<List<NotesModel>> GetNotes(int userId)
+        {
+            try
+            {
+                var result = new ResponseModel<List<NotesModel>>();
+
+                // Iterate notes using LINQ.
+                List<NotesModel> noteList = (from note in this._fundooContext.Notes
+                                             where note.UserId == userId && note.Archive == false && note.Trash == false
+                                             select note).ToList();
+
+                //// Iterate notes using foreach.
+                //List<NotesModel> noteList = new List<NotesModel>();
+                //foreach (NotesModel note in this._fundooContext.Notes)
+                //{
+                //    if (note.UserId == userId && note.Archive == false && note.Trash == false)
+                //    {
+                //        noteList.Add(note);
+                //    }
+                //}
+
+                if (noteList.Count > 0)
+                {
+                    result.Status = true;
+                    result.Message = $"{noteList.Count} Notes retrieved Successfully";
+                    result.Data = noteList;
+                    return result;
+                }
+
+                result.Message = "No Notes available";
                 return result;
             }
             catch (Exception ex)
