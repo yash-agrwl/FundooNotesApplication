@@ -338,5 +338,35 @@ namespace RepositoryLayer.Repository
                 throw new Exception(ex.Message);
             }
         }
+
+        public ResponseModel<NotesModel> RestoreNote(int noteId, int userId)
+        {
+            try
+            {
+                var result = new ResponseModel<NotesModel>();
+                var existNote = this._fundooContext.Notes.Where(x => x.UserId == userId &&
+                                                                     x.NoteId == noteId &&
+                                                                     x.Trash == true).FirstOrDefault();
+                if (existNote != null)
+                {
+                    existNote.Trash = false;
+
+                    this._fundooContext.Notes.Update(existNote);
+                    this._fundooContext.SaveChanges();
+
+                    result.Status = true;
+                    result.Message = "Note Restored";
+                    result.Data = existNote;
+                    return result;
+                }
+
+                result.Message = "Note not available";
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

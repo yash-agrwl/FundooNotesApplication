@@ -26,5 +26,7 @@ namespace BusinessLayer.Interface
         ResponseModel<NotesModel> MoveToTrash(int noteId, int userId);
 
         ResponseModel<List<NotesModel>> GetTrash(int userId);
+
+        ResponseModel<NotesModel> RestoreNote(int noteId, int userId);
     }
 }
