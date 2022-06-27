@@ -28,5 +28,7 @@ namespace RepositoryLayer.Interface
         ResponseModel<List<NotesModel>> GetTrash(int userId);
 
         ResponseModel<NotesModel> RestoreNote(int noteId, int userId);
+
+        ResponseModel<NotesModel> DeleteForever(int noteId, int userId);
     }
 }

@@ -360,7 +360,35 @@ namespace RepositoryLayer.Repository
                     return result;
                 }
 
-                result.Message = "Note not available";
+                result.Message = "No Notes available";
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public ResponseModel<NotesModel> DeleteForever(int noteId, int userId)
+        {
+            try
+            {
+                var result = new ResponseModel<NotesModel>();
+                var existNote = this._fundooContext.Notes.Where(x => x.UserId == userId &&
+                                                                     x.NoteId == noteId &&
+                                                                     x.Trash == true).FirstOrDefault();
+                if (existNote != null)
+                {
+                    this._fundooContext.Notes.Remove(existNote);
+                    this._fundooContext.SaveChanges();
+
+                    result.Status = true;
+                    result.Message = "Note deleted forever";
+                    result.Data = existNote;
+                    return result;
+                }
+
+                result.Message = "No Notes available";
                 return result;
             }
             catch (Exception ex)
