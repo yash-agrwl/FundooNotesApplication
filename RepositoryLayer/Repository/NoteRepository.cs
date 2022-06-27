@@ -1,4 +1,7 @@
-﻿using CommonLayer;
+﻿using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using CommonLayer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using RepositoryLayer.Context;
 using RepositoryLayer.Interface;
@@ -476,6 +479,46 @@ namespace RepositoryLayer.Repository
                 }
 
                 result.Message = "No Reminder available";
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public ResponseModel<NotesModel> AddImage(int noteId, int userId, IFormFile form)
+        {
+            try
+            {
+                var result = new ResponseModel<NotesModel>();
+                var existNote = this._fundooContext.Notes.Where(x => x.UserId == userId &&
+                                                                     x.NoteId == noteId &&
+                                                                     x.Trash == false).FirstOrDefault();
+                if (existNote != null)
+                {
+                    var cloudinary = new Cloudinary(new Account(this.Configuration["Cloudinary:CloudName"],
+                                                                this.Configuration["Cloudinary:APIKey"],
+                                                                this.Configuration["Cloudinary:APISecret"]));
+                    var addingImage = new ImageUploadParams()
+                    {
+                        File = new FileDescription(form.FileName, form.OpenReadStream())
+                    };
+
+                    var uploadResult = cloudinary.Upload(addingImage);
+                    var uploadPath = uploadResult.Url;
+                    existNote.AddedImage = uploadPath.ToString();
+
+                    this._fundooContext.Notes.Update(existNote);
+                    this._fundooContext.SaveChanges();
+
+                    result.Status = true;
+                    result.Message = "Image Added Successfully";
+                    result.Data = existNote;
+                    return result;
+                }
+
+                result.Message = "Unsuccessfull to add image";
                 return result;
             }
             catch (Exception ex)

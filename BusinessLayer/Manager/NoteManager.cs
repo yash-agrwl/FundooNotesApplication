@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Interface;
 using CommonLayer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using RepositoryLayer.Interface;
 using System;
@@ -181,6 +182,18 @@ namespace BusinessLayer.Manager
             try
             {
                 return this._repository.DeleteReminder(noteId, userId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public ResponseModel<NotesModel> AddImage(int noteId, int userId, IFormFile form)
+        {
+            try
+            {
+                return this._repository.AddImage(noteId, userId, form);
             }
             catch (Exception ex)
             {

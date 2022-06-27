@@ -1,4 +1,5 @@
 ﻿using CommonLayer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -36,5 +37,7 @@ namespace BusinessLayer.Interface
         ResponseModel<List<NotesModel>> GetReminders(int userId);
 
         ResponseModel<NotesModel> DeleteReminder(int noteId, int userId);
+
+        ResponseModel<NotesModel> AddImage(int noteId, int userId, IFormFile form);
     }
 }

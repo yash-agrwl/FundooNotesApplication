@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Interface;
 using CommonLayer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -295,6 +296,27 @@ namespace FundooNotesApplication.Controllers
             try
             {
                 var result = this._manager.DeleteReminder(noteId, userId);
+
+                if (result.Status == true)
+                {
+                    return this.Ok(result);
+                }
+
+                return this.BadRequest(result);
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
+            }
+        }
+
+        [HttpPatch]
+        [Route("AddImage")]
+        public IActionResult AddImage(int noteId, int userId, IFormFile form)
+        {
+            try
+            {
+                var result = this._manager.AddImage(noteId, userId, form);
 
                 if (result.Status == true)
                 {
