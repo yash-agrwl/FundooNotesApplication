@@ -13,5 +13,7 @@ namespace RepositoryLayer.Context
         public DbSet<RegisterModel> Users { get; set; }
 
         public DbSet<NotesModel> Notes { get; set; }
+
+        public DbSet<CollaboratorModel> Collaborators { get; set; }
     }
 }
