@@ -31,5 +31,17 @@ namespace BusinessLayer.Manager
                 throw new Exception(ex.Message);
             }
         }
+
+        public ResponseModel<List<string>> GetCollaborator(int noteId, int userId)
+        {
+            try
+            {
+                return this._repository.GetCollaborator(noteId, userId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

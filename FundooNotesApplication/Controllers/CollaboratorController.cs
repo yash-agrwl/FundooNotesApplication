@@ -24,11 +24,32 @@ namespace FundooNotesApplication.Controllers
             {
                 var result = this.manager.AddCollaborator(collab, userId);
 
-                if (result != null)
+                if (result.Status == true)
                 {
                     return this.Ok(result);
                 }
                 
+                return this.BadRequest(result);
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        [Route("Get")]
+        public IActionResult GetCollaborator(int noteId, int userId)
+        {
+            try
+            {
+                var result = this.manager.GetCollaborator(noteId, userId);
+
+                if (result.Status == true)
+                {
+                    return this.Ok(result);
+                }
+
                 return this.BadRequest(result);
             }
             catch (Exception ex)
