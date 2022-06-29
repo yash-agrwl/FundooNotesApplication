@@ -11,5 +11,7 @@ namespace RepositoryLayer.Interface
         ResponseModel<CollaboratorModel> AddCollaborator(CollaboratorModel collab, int userId);
 
         ResponseModel<List<string>> GetCollaborator(int noteId, int userId);
+
+        ResponseModel<CollaboratorModel> DeleteCollaborator(int noteId, int userId, string collabMail);
     }
 }

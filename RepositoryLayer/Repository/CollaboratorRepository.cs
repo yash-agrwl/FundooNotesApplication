@@ -92,5 +92,40 @@ namespace RepositoryLayer.Repository
                 throw new Exception(ex.Message);
             }
         }
+
+        public ResponseModel<CollaboratorModel> DeleteCollaborator(int noteId, int userId, string collabMail)
+        {
+            try
+            {
+                var result = new ResponseModel<CollaboratorModel>();
+                var existNote = this._fundooContext.Notes.Where(x => x.NoteId == noteId &&
+                                                                     x.UserId == userId).SingleOrDefault();
+                if (existNote != null)
+                {
+                    var collab = this._fundooContext.Collaborators.Where(x => x.NoteId == noteId &&
+                                                                         x.SharedEmail == collabMail).SingleOrDefault();
+                    if (collab != null)
+                    {
+                        this._fundooContext.Collaborators.Remove(collab);
+                        this._fundooContext.SaveChanges();
+
+                        result.Status = true;
+                        result.Message = "Collaborator deleted Successfully";
+                        result.Data = collab;
+                        return result;
+                    }
+
+                    result.Message = "No collaborator found with this email";
+                    return result;
+                }
+
+                result.Message = "Note not available";
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

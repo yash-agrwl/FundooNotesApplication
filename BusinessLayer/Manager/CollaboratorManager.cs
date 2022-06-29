@@ -43,5 +43,17 @@ namespace BusinessLayer.Manager
                 throw new Exception(ex.Message);
             }
         }
+
+        public ResponseModel<CollaboratorModel> DeleteCollaborator(int noteId, int userId, string collabMail)
+        {
+            try
+            {
+                return this._repository.DeleteCollaborator(noteId, userId, collabMail);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

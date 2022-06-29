@@ -9,11 +9,11 @@ namespace FundooNotesApplication.Controllers
     [Route("api/[Controller]")]
     public class CollaboratorController : Controller
     {
-        private readonly ICollaboratorManager manager;
+        private readonly ICollaboratorManager _manager;
 
         public CollaboratorController(ICollaboratorManager manager)
         {
-            this.manager = manager;
+            this._manager = manager;
         }
 
         [HttpPost]
@@ -22,7 +22,7 @@ namespace FundooNotesApplication.Controllers
         {
             try
             {
-                var result = this.manager.AddCollaborator(collab, userId);
+                var result = this._manager.AddCollaborator(collab, userId);
 
                 if (result.Status == true)
                 {
@@ -43,7 +43,28 @@ namespace FundooNotesApplication.Controllers
         {
             try
             {
-                var result = this.manager.GetCollaborator(noteId, userId);
+                var result = this._manager.GetCollaborator(noteId, userId);
+
+                if (result.Status == true)
+                {
+                    return this.Ok(result);
+                }
+
+                return this.BadRequest(result);
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
+            }
+        }
+
+        [HttpDelete]
+        [Route("Delete")]
+        public IActionResult DeleteCollaborator(int noteId, int userId, string collabMail)
+        {
+            try
+            {
+                var result = this._manager.DeleteCollaborator(noteId, userId, collabMail);
 
                 if (result.Status == true)
                 {
