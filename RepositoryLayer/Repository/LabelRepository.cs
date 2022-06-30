@@ -102,5 +102,35 @@ namespace RepositoryLayer.Repository
             result.Message = "Label doesn't exist";
             return result;
         }
+
+        public ResponseModel<LabelNoteModel> AddNoteToLabel(string labelName, int noteId, int userId)
+        {
+            var result = new ResponseModel<LabelNoteModel>();
+            var existNote = this._fundooContext.Notes.Where(x => x.UserId == userId &&
+                                                                 x.NoteId == noteId).SingleOrDefault();
+            if (existNote != null)
+            {
+                var existLabel = this._fundooContext.LabelNames.Where(x => x.UserId == userId &&
+                                                                           x.LabelName == labelName).SingleOrDefault();
+                if (existLabel != null)
+                {
+                    var labelNote = new LabelNoteModel { LabelNames = existLabel, NoteId = noteId };
+
+                    this._fundooContext.Add(labelNote);
+                    this._fundooContext.SaveChanges();
+                    
+                    result.Status = true;
+                    result.Message = "Note added to Label";
+                    result.Data = labelNote;
+                    return result;
+                }
+
+                result.Message = "Label doesn't exist";
+                return result;
+            }
+            
+            result.Message = "Note doesn't exist";
+            return result;
+        }
     }
 }

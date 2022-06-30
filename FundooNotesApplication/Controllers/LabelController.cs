@@ -78,5 +78,26 @@ namespace FundooNotesApplication.Controllers
                 return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
             }
         }
+
+        [HttpPost]
+        [Route("AddNote")]
+        public IActionResult AddNoteToLabel(string labelName, int noteId, int userId)
+        {
+            try
+            {
+                var result = this._manager.AddNoteToLabel(labelName, noteId, userId);
+
+                if (result.Status == true)
+                {
+                    return this.Ok(result);
+                }
+
+                return this.BadRequest(result);
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
+            }
+        }
     }
 }

@@ -54,5 +54,17 @@ namespace BusinessLayer.Manager
                 throw new Exception(ex.Message);
             }
         }
+
+        public ResponseModel<LabelNoteModel> AddNoteToLabel(string labelName, int noteId, int userId)
+        {
+            try
+            {
+                return this._repository.AddNoteToLabel(labelName, noteId, userId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
