@@ -38,7 +38,7 @@ namespace FundooNotesApplication.Controllers
         }
 
         [HttpGet]
-        [Route("GetAll")]
+        [Route("GetLabels")]
         public IActionResult GetAllLabel(int userId)
         {
             try
@@ -86,6 +86,27 @@ namespace FundooNotesApplication.Controllers
             try
             {
                 var result = this._manager.AddNoteToLabel(labelName, noteId, userId);
+
+                if (result.Status == true)
+                {
+                    return this.Ok(result);
+                }
+
+                return this.BadRequest(result);
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        [Route("GetNotes")]
+        public IActionResult GetAllNotesFromLabel(string labelName, int userId)
+        {
+            try
+            {
+                var result = this._manager.GetAllNotesFromLabel(labelName, userId);
 
                 if (result.Status == true)
                 {

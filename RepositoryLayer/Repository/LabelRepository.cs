@@ -132,5 +132,40 @@ namespace RepositoryLayer.Repository
             result.Message = "Note doesn't exist";
             return result;
         }
+
+        public ResponseModel<List<NotesModel>> GetAllNotesFromLabel(string labelName, int userId)
+        {
+            var result = new ResponseModel<List<NotesModel>>();
+            var existLabel = this._fundooContext.LabelNames.Where(x => x.UserId == userId &&
+                                                                       x.LabelName == labelName).SingleOrDefault();
+            if (existLabel != null)
+            {
+                var allNoteId = (from labelData in this._fundooContext.LabelNotes
+                                 where labelData.LabelNames == existLabel
+                                 select labelData.NoteId).ToList();
+
+                if (allNoteId.Count > 0)
+                {
+                    var noteList = new List<NotesModel>();
+
+                    foreach (var id in allNoteId)
+                    {
+                        var note = this._fundooContext.Notes.Where(x => x.NoteId == id).FirstOrDefault();
+                        noteList.Add(note);
+                    }
+
+                    result.Status = true;
+                    result.Message = $"{allNoteId.Count} Notes Successfully Retrieved";
+                    result.Data = noteList;
+                    return result;
+                }
+
+                result.Message = "Label is empty";
+                return result;
+            }
+
+            result.Message = "Label doesn't exist";
+            return result;
+        }
     }
 }

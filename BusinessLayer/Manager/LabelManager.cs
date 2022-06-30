@@ -66,5 +66,17 @@ namespace BusinessLayer.Manager
                 throw new Exception(ex.Message);
             }
         }
+
+        public ResponseModel<List<NotesModel>> GetAllNotesFromLabel(string labelName, int userId)
+        {
+            try
+            {
+                return this._repository.GetAllNotesFromLabel(labelName, userId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

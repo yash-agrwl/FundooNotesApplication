@@ -15,5 +15,7 @@ namespace RepositoryLayer.Interface
         ResponseModel<LabelNameModel> DeleteLabel(int userId, string labelName);
 
         ResponseModel<LabelNoteModel> AddNoteToLabel(string labelName, int noteId, int userId);
+
+        ResponseModel<List<NotesModel>> GetAllNotesFromLabel(string labelName, int userId);
     }
 }
