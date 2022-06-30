@@ -27,7 +27,8 @@ namespace FundooNotesApplication
         {
             services.AddControllers();
 
-            services.AddDbContextPool<FundooContext>(options => options.UseMySql(this.Configuration.GetConnectionString("FundooDB")));
+            services.AddDbContextPool<FundooContext>(options => options.UseMySql(this.Configuration
+                                                                       .GetConnectionString("FundooDB")));
 
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserManager, UserManager>();

@@ -74,6 +74,28 @@ namespace RepositoryLayer.Repository
             return result;
         }
 
+        public ResponseModel<LabelNameModel> EditLabel(int userId, string currentName, string newName)
+        {
+            var result = new ResponseModel<LabelNameModel>();
+            var existLabel = this._fundooContext.LabelNames.Where(x => x.LabelName == currentName &&
+                                                                       x.UserId == userId).SingleOrDefault();
+            if (existLabel != null)
+            {
+                existLabel.LabelName = newName;
+
+                this._fundooContext.LabelNames.Update(existLabel);
+                this._fundooContext.SaveChanges();
+
+                result.Status = true;
+                result.Message = "Label Renamed Successfully";
+                result.Data = existLabel;
+                return result;
+            }
+
+            result.Message = "Label doesn't exist";
+            return result;
+        }
+
         public ResponseModel<LabelNameModel> DeleteLabel(int userId, string labelName)
         {
             var result = new ResponseModel<LabelNameModel>();

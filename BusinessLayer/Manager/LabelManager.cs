@@ -43,6 +43,18 @@ namespace BusinessLayer.Manager
             }
         }
 
+        public ResponseModel<LabelNameModel> EditLabel(int userId, string currentName, string newName)
+        {
+            try
+            {
+                return this._repository.EditLabel(userId, currentName, newName);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public ResponseModel<LabelNameModel> DeleteLabel(int userId, string labelName)
         {
             try

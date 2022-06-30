@@ -58,6 +58,27 @@ namespace FundooNotesApplication.Controllers
             }
         }
 
+        [HttpPatch]
+        [Route("EditLabel")]
+        public IActionResult EditLabel(int userId, string currentName, string newName)
+        {
+            try
+            {
+                var result = this._manager.EditLabel(userId, currentName, newName);
+
+                if (result.Status == true)
+                {
+                    return this.Ok(result);
+                }
+
+                return this.BadRequest(result);
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
+            }
+        }
+
         [HttpDelete]
         [Route("DeleteLabel")]
         public IActionResult DeleteLabel(int userId, string labelName)
