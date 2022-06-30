@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace FundooNotesApplication.Controllers
 {
+    [ApiController]
+    [Route("api/[Controller]")]
     public class UserController : Controller
     {
         private readonly IUserManager manager;
@@ -16,20 +18,19 @@ namespace FundooNotesApplication.Controllers
         }
 
         [HttpPost]
-        [Route("api/register")]
-        public IActionResult Register([FromBody] RegisterModel userdata)
+        [Route("Register")]
+        public IActionResult Register(RegisterModel userdata)
         {
             try
             {
                 var result = this.manager.Register(userdata);
+
                 if (result.Status == true)
                 {
                     return this.Ok(result);
                 }
-                else
-                {
-                    return this.BadRequest(result);
-                }
+
+                return this.BadRequest(result);
             }
             catch (Exception ex)
             {
@@ -38,20 +39,19 @@ namespace FundooNotesApplication.Controllers
         }
 
         [HttpPost]
-        [Route("api/login")]
-        public IActionResult Login([FromBody] LoginModel userData)
+        [Route("Login")]
+        public IActionResult Login(LoginModel userData)
         {
             try
             {
                 var result = this.manager.Login(userData);
+
                 if (result.Status == true)
                 {
                     return this.Ok(result);
                 }
-                else
-                {
-                    return this.BadRequest(result);
-                }
+
+                return this.BadRequest(result);
             }
             catch (Exception ex)
             {
@@ -60,20 +60,19 @@ namespace FundooNotesApplication.Controllers
         }
 
         [HttpPost]
-        [Route("api/resetPassword")]
-        public IActionResult ResetPassword([FromBody] ResetPasswordModel userData)
+        [Route("ResetPassword")]
+        public IActionResult ResetPassword(ResetPasswordModel userData)
         {
             try
             {
                 var result = this.manager.ResetPassword(userData);
+
                 if (result.Status == true)
                 {
                     return this.Ok(result);
                 }
-                else
-                {
-                    return this.BadRequest(result);
-                }
+
+                return this.BadRequest(result);
             }
             catch (Exception ex)
             {
@@ -82,20 +81,19 @@ namespace FundooNotesApplication.Controllers
         }
 
         [HttpPost]
-        [Route("api/forgotPassword")]
+        [Route("ForgotPassword")]
         public async Task<IActionResult> ForgotPassword(string email)
         {
             try
             {
                 string result = await this.manager.ForgotPassword(email);
+
                 if (result.Equals("Email Sent Successfully"))
                 {
                     return this.Ok(new ResponseModel<string>() { Status = true, Message = result, Data = email });
                 }
-                else
-                {
-                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = result });
-                }
+
+                return this.BadRequest(new ResponseModel<string>() { Status = false, Message = result });
             }
             catch (Exception ex)
             {

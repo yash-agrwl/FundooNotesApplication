@@ -76,32 +76,27 @@ namespace RepositoryLayer.Repository
         {
             try
             {
+                var result = new ResponseModel<LoginModel>();
                 var validEmail = this.fundooContext.Users.Where(x => x.Email == userData.Email).FirstOrDefault();
+                result.Data = userData;
+
                 if (validEmail != null)
                 {
                     userData.Password = EncryptPassword(userData.Password);
+
                     if (userData.Password == validEmail.Password)
                     {
-                        return new ResponseModel<LoginModel>()
-                        {
-                            Status = true,
-                            Message = "Login Successful",
-                            Data = userData
-                        };
+                        result.Status = true;
+                        result.Message = "Login Successful";
+                        return result;
                     }
-                    return new ResponseModel<LoginModel>()
-                    {
-                        Status = false,
-                        Message = "Incorrect Password",
-                        Data = userData
-                    };
+
+                    result.Message = "Incorrect Password";
+                    return result;
                 }
-                return new ResponseModel<LoginModel>()
-                {
-                    Status = false,
-                    Message = "Email not Registered",
-                    Data = userData
-                };
+
+                result.Message = "Email not Registered";
+                return result;
             }
             catch (Exception e)
             {
@@ -113,27 +108,26 @@ namespace RepositoryLayer.Repository
         {
             try
             {
+                var result = new ResponseModel<ResetPasswordModel>();
                 var validEmail = this.fundooContext.Users.Where(x => x.Email == userData.Email).FirstOrDefault();
+                result.Data = userData;
+
                 if (validEmail != null)
                 {
                     validEmail.Password = EncryptPassword(userData.Password);
+
                     // Add data to the database using userContext.
                     this.fundooContext.Update(validEmail);
                     // Saving data in database.
                     this.fundooContext.SaveChanges();
-                    return new ResponseModel<ResetPasswordModel>()
-                    {
-                        Status = true,
-                        Message = "Password Reset Successful",
-                        Data = userData
-                    };
+
+                    result.Status = true;
+                    result.Message = "Password Reset Successful";
+                    return result;
                 }
-                return new ResponseModel<ResetPasswordModel>()
-                {
-                    Status = false,
-                    Message = "Wrong Email Entered",
-                    Data = userData
-                };
+                
+                result.Message = "Wrong Email Entered";
+                return result;
             }
             catch (Exception e)
             {
@@ -146,6 +140,7 @@ namespace RepositoryLayer.Repository
             try
             {
                 var validEmail = this.fundooContext.Users.Where(x => x.Email == email).FirstOrDefault();
+
                 if (validEmail != null)
                 {
                     this.SendMSMQ("Link for resetting the password");
@@ -153,6 +148,7 @@ namespace RepositoryLayer.Repository
                     this.SendMailUsingSMTP(email, linkToBeSend);
                     return Task.FromResult("Email Sent Successfully");
                 }
+
                 return Task.FromResult("Email Not Registered");
             }
             catch (Exception e)
