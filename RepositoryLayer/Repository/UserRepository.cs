@@ -29,7 +29,9 @@ namespace RepositoryLayer.Repository
         {
             try
             {
+                var result = new ResponseModel<RegisterModel>();
                 var validEmail = this.fundooContext.Users.Where(x => x.Email == userData.Email).FirstOrDefault();
+                result.Data = userData;
                 if (validEmail == null)
                 {
                     // Encrypt password with MD5.
@@ -38,20 +40,15 @@ namespace RepositoryLayer.Repository
                     this.fundooContext.Add(userData);
                     // Saving data in database.
                     this.fundooContext.SaveChanges();
-                    return new ResponseModel<RegisterModel>()
-                    {
-                        Status = true,
-                        Message = "Registration Successful",
-                        Data = userData
-                    };
+
+                    result.Status = true;
+                    result.Message = "Registration Successful";
+                    return result;
                 }
+
                 userData.UserID = validEmail.UserID;
-                return new ResponseModel<RegisterModel>()
-                {
-                    Status = false,
-                    Message = "Email Id Already Exists",
-                    Data = userData
-                };
+                result.Message = "Email Id Already Exists";
+                return result;
             }
             catch (Exception e)
             {
