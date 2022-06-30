@@ -78,5 +78,17 @@ namespace BusinessLayer.Manager
                 throw new Exception(ex.Message);
             }
         }
+
+        public ResponseModel<LabelNoteModel> DeleteNoteFromLabel(string labelName, int noteId, int userId)
+        {
+            try
+            {
+                return this._repository.DeleteNoteFromLabel(labelName, noteId, userId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

@@ -17,5 +17,7 @@ namespace BusinessLayer.Interface
         ResponseModel<LabelNoteModel> AddNoteToLabel(string labelName, int noteId, int userId);
 
         ResponseModel<List<NotesModel>> GetAllNotesFromLabel(string labelName, int userId);
+
+        ResponseModel<LabelNoteModel> DeleteNoteFromLabel(string labelName, int noteId, int userId);
     }
 }

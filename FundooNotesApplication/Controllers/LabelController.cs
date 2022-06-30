@@ -17,7 +17,7 @@ namespace FundooNotesApplication.Controllers
         }
 
         [HttpPost]
-        [Route("Create")]
+        [Route("CreateLabel")]
         public IActionResult CreateNewLabel(LabelNameModel labelData)
         {
             try
@@ -59,7 +59,7 @@ namespace FundooNotesApplication.Controllers
         }
 
         [HttpDelete]
-        [Route("Delete")]
+        [Route("DeleteLabel")]
         public IActionResult DeleteLabel(int userId, string labelName)
         {
             try
@@ -107,6 +107,27 @@ namespace FundooNotesApplication.Controllers
             try
             {
                 var result = this._manager.GetAllNotesFromLabel(labelName, userId);
+
+                if (result.Status == true)
+                {
+                    return this.Ok(result);
+                }
+
+                return this.BadRequest(result);
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
+            }
+        }
+
+        [HttpDelete]
+        [Route("DeleteNote")]
+        public IActionResult DeleteNoteFromLabel(string labelName, int noteId, int userId)
+        {
+            try
+            {
+                var result = this._manager.DeleteNoteFromLabel(labelName,noteId, userId);
 
                 if (result.Status == true)
                 {
