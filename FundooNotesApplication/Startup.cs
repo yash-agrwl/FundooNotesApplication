@@ -38,6 +38,9 @@ namespace FundooNotesApplication
             services.AddTransient<ICollaboratorManager, CollaboratorManager>();
             services.AddTransient<ICollaboratorRepository, CollaboratorRepository>();
 
+            services.AddTransient<ILabelManager, LabelManager>();
+            services.AddTransient<ILabelRepository, LabelRepository>();
+
             services.AddSwaggerGen(swagger =>
             {
                 swagger.SwaggerDoc(name: "v1", new OpenApiInfo { Title = "FundooNotes", Version = "v1" });
