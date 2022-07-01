@@ -45,10 +45,17 @@ namespace FundooNotesApplication.Controllers
             try
             {
                 var result = this.manager.Login(userData);
+                string token = this.manager.GenerateToken(result.Data.UserID);
 
                 if (result.Status == true)
                 {
-                    return this.Ok(result);
+                    return this.Ok(new
+                    {
+                        result.Status,
+                        result.Message,
+                        token,
+                        result.Data
+                    });
                 }
 
                 return this.BadRequest(result);

@@ -1,8 +1,12 @@
 ﻿using BusinessLayer.Interface;
 using CommonLayer;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using RepositoryLayer.Interface;
 using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace BusinessLayer.Manager
@@ -31,7 +35,7 @@ namespace BusinessLayer.Manager
             }
         }
 
-        public ResponseModel<LoginModel> Login(LoginModel userdata)
+        public ResponseModel<RegisterModel> Login(LoginModel userdata)
         {
             try
             {
@@ -65,6 +69,21 @@ namespace BusinessLayer.Manager
             {
                 throw new Exception(e.Message);
             }
+        }
+
+        public string GenerateToken(int userId)
+        {
+            byte[] key = Encoding.UTF8.GetBytes(this.Configuration["JwtToken:SecretKey"]);
+            SymmetricSecurityKey securityKey = new SymmetricSecurityKey(key);
+            SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim("UserId", userId.ToString()) }),
+                Expires = DateTime.UtcNow.AddMinutes(30),
+                SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature)
+            };
+            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+            JwtSecurityToken token = handler.CreateJwtSecurityToken(descriptor);
+            return handler.WriteToken(token);
         }
     }
 }

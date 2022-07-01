@@ -10,10 +10,12 @@ namespace BusinessLayer.Interface
 
         ResponseModel<RegisterModel> Register(RegisterModel userdata);
 
-        ResponseModel<LoginModel> Login(LoginModel userdata);
+        ResponseModel<RegisterModel> Login(LoginModel userdata);
 
         ResponseModel<ResetPasswordModel> ResetPassword(ResetPasswordModel userData);
 
         Task<string> ForgotPassword(string email);
+
+        string GenerateToken(int userId);
     }
 }

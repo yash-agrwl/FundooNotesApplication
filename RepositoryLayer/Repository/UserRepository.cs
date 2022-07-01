@@ -72,13 +72,13 @@ namespace RepositoryLayer.Repository
             return encryptData.ToString();
         }
 
-        public ResponseModel<LoginModel> Login(LoginModel userData)
+        public ResponseModel<RegisterModel> Login(LoginModel userData)
         {
             try
             {
-                var result = new ResponseModel<LoginModel>();
+                var result = new ResponseModel<RegisterModel>();
                 var validEmail = this.fundooContext.Users.Where(x => x.Email == userData.Email).FirstOrDefault();
-                result.Data = userData;
+                result.Data = validEmail;
 
                 if (validEmail != null)
                 {
