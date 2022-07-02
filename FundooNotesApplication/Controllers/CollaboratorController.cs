@@ -1,10 +1,13 @@
 ﻿using BusinessLayer.Interface;
 using CommonLayer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 
 namespace FundooNotesApplication.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[Controller]")]
     public class CollaboratorController : Controller
@@ -18,10 +21,11 @@ namespace FundooNotesApplication.Controllers
 
         [HttpPost]
         [Route("Add")]
-        public IActionResult AddCollaborator(CollaboratorModel collab, int userId)
+        public IActionResult AddCollaborator(CollaboratorModel collab)
         {
             try
             {
+                int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
                 var result = this._manager.AddCollaborator(collab, userId);
 
                 if (result.Status == true)
@@ -39,10 +43,11 @@ namespace FundooNotesApplication.Controllers
 
         [HttpGet]
         [Route("Get")]
-        public IActionResult GetCollaborator(int noteId, int userId)
+        public IActionResult GetCollaborator(int noteId)
         {
             try
             {
+                int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
                 var result = this._manager.GetCollaborator(noteId, userId);
 
                 if (result.Status == true)
@@ -60,10 +65,11 @@ namespace FundooNotesApplication.Controllers
 
         [HttpDelete]
         [Route("Delete")]
-        public IActionResult DeleteCollaborator(int noteId, int userId, string collabMail)
+        public IActionResult DeleteCollaborator(int noteId, string collabMail)
         {
             try
             {
+                int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
                 var result = this._manager.DeleteCollaborator(noteId, userId, collabMail);
 
                 if (result.Status == true)
