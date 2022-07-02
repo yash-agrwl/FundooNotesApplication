@@ -1,12 +1,15 @@
 ﻿using BusinessLayer.Interface;
 using CommonLayer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FundooNotesApplication.Controllers
-{ 
+{
+    [Authorize]
     [Route("api/[Controller]")]
     [ApiController]
     public class NoteController : Controller
@@ -24,6 +27,7 @@ namespace FundooNotesApplication.Controllers
         {
             try
             {
+                noteData.UserId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
                 var result = this._manager.CreateNote(noteData);
                 if (result.Status == true)
                 {
@@ -40,10 +44,11 @@ namespace FundooNotesApplication.Controllers
 
         [HttpGet]
         [Route("GetNotes")]
-        public IActionResult GetNotes(int userId)
+        public IActionResult GetNotes()
         {
             try
             {
+                int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
                 var result = this._manager.GetNotes(userId);
 
                 if (result.Status == true)
@@ -65,6 +70,7 @@ namespace FundooNotesApplication.Controllers
         {
             try
             {
+                noteData.UserId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
                 var result = await this._manager.EditNotes(noteData);
                 if (result.Status == true)
                 {
@@ -81,10 +87,11 @@ namespace FundooNotesApplication.Controllers
 
         [HttpPatch]
         [Route("ToggleArchive/{noteId}")]
-        public IActionResult ToggleArchive(int noteId, int userId)
+        public IActionResult ToggleArchive(int noteId)
         {
             try
             {
+                int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
                 var result = this._manager.ToggleArchive(noteId, userId);
 
                 if (result.Status == true)
@@ -102,10 +109,11 @@ namespace FundooNotesApplication.Controllers
 
         [HttpGet]
         [Route("GetArchive")]
-        public IActionResult GetArchive(int userId)
+        public IActionResult GetArchive()
         {
             try
             {
+                int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
                 var result = this._manager.GetArchive(userId);
 
                 if (result.Status == true)
@@ -123,10 +131,11 @@ namespace FundooNotesApplication.Controllers
 
         [HttpPatch]
         [Route("TogglePin")]
-        public IActionResult TogglePin(int noteId, int userId)
+        public IActionResult TogglePin(int noteId)
         {
             try
             {
+                int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
                 var result = this._manager.TogglePin(noteId, userId);
 
                 if (result.Status == true)
@@ -144,10 +153,11 @@ namespace FundooNotesApplication.Controllers
 
         [HttpPatch]
         [Route("SetColor")]
-        public IActionResult SetColor(int noteId, int userId, string noteColor)
+        public IActionResult SetColor(int noteId, string noteColor)
         {
             try
             {
+                int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
                 var result = this._manager.SetColor(noteId, userId, noteColor);
 
                 if (result.Status == true)
@@ -165,10 +175,11 @@ namespace FundooNotesApplication.Controllers
 
         [HttpPatch]
         [Route("MoveToTrash")]
-        public IActionResult MoveToTrash(int noteId, int userId)
+        public IActionResult MoveToTrash(int noteId)
         {
             try
             {
+                int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
                 var result = this._manager.MoveToTrash(noteId, userId);
 
                 if (result.Status == true)
@@ -186,10 +197,11 @@ namespace FundooNotesApplication.Controllers
 
         [HttpGet]
         [Route("GetTrash")]
-        public IActionResult GetTrash(int userId)
+        public IActionResult GetTrash()
         {
             try
             {
+                int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
                 var result = this._manager.GetTrash(userId);
 
                 if (result.Status == true)
@@ -207,10 +219,11 @@ namespace FundooNotesApplication.Controllers
 
         [HttpPatch]
         [Route("Restore")]
-        public IActionResult RestoreNote(int noteId, int userId)
+        public IActionResult RestoreNote(int noteId)
         {
             try
             {
+                int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
                 var result = this._manager.RestoreNote(noteId, userId);
 
                 if (result.Status == true)
@@ -228,10 +241,11 @@ namespace FundooNotesApplication.Controllers
 
         [HttpDelete]
         [Route("DeleteForever")]
-        public IActionResult DeleteForever(int noteId, int userId)
+        public IActionResult DeleteForever(int noteId)
         {
             try
             {
+                int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
                 var result = this._manager.DeleteForever(noteId, userId);
 
                 if (result.Status == true)
@@ -249,10 +263,11 @@ namespace FundooNotesApplication.Controllers
 
         [HttpPatch]
         [Route("AddReminder")]
-        public IActionResult AddReminder(int noteId, int userId, string remind)
+        public IActionResult AddReminder(int noteId, string remind)
         {
             try
             {
+                int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
                 var result = this._manager.AddReminder(noteId, userId, remind);
 
                 if (result.Status == true)
@@ -270,10 +285,11 @@ namespace FundooNotesApplication.Controllers
 
         [HttpGet]
         [Route("GetReminders")]
-        public IActionResult GetReminders(int userId)
+        public IActionResult GetReminders()
         {
             try
             {
+                int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
                 var result = this._manager.GetReminders(userId);
 
                 if (result.Status == true)
@@ -291,10 +307,11 @@ namespace FundooNotesApplication.Controllers
 
         [HttpPatch]
         [Route("DeleteReminder")]
-        public IActionResult DeleteReminder(int noteId, int userId)
+        public IActionResult DeleteReminder(int noteId)
         {
             try
             {
+                int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
                 var result = this._manager.DeleteReminder(noteId, userId);
 
                 if (result.Status == true)
@@ -312,10 +329,11 @@ namespace FundooNotesApplication.Controllers
 
         [HttpPatch]
         [Route("AddImage")]
-        public IActionResult AddImage(int noteId, int userId, IFormFile form)
+        public IActionResult AddImage(int noteId, IFormFile form)
         {
             try
             {
+                int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
                 var result = this._manager.AddImage(noteId, userId, form);
 
                 if (result.Status == true)
@@ -333,10 +351,11 @@ namespace FundooNotesApplication.Controllers
 
         [HttpPatch]
         [Route("RemoveImage")]
-        public IActionResult RemoveImage(int noteId, int userId)
+        public IActionResult RemoveImage(int noteId)
         {
             try
             {
+                int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
                 var result = this._manager.RemoveImage(noteId, userId);
 
                 if (result.Status == true)
