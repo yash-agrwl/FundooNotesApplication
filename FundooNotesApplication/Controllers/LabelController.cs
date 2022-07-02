@@ -1,10 +1,13 @@
 ﻿using BusinessLayer.Interface;
 using CommonLayer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 
 namespace FundooNotesApplication.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class LabelController : Controller
@@ -22,6 +25,7 @@ namespace FundooNotesApplication.Controllers
         {
             try
             {
+                labelData.UserId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
                 var result = this._manager.CreateNewLabel(labelData);
 
                 if (result.Status == true)
@@ -39,10 +43,11 @@ namespace FundooNotesApplication.Controllers
 
         [HttpGet]
         [Route("GetLabels")]
-        public IActionResult GetAllLabel(int userId)
+        public IActionResult GetAllLabel()
         {
             try
             {
+                int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
                 var result = this._manager.GetAllLabel(userId);
 
                 if (result.Status == true)
@@ -60,10 +65,11 @@ namespace FundooNotesApplication.Controllers
 
         [HttpPatch]
         [Route("EditLabel")]
-        public IActionResult EditLabel(int userId, string currentName, string newName)
+        public IActionResult EditLabel(string currentName, string newName)
         {
             try
             {
+                int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
                 var result = this._manager.EditLabel(userId, currentName, newName);
 
                 if (result.Status == true)
@@ -81,10 +87,11 @@ namespace FundooNotesApplication.Controllers
 
         [HttpDelete]
         [Route("DeleteLabel")]
-        public IActionResult DeleteLabel(int userId, string labelName)
+        public IActionResult DeleteLabel(string labelName)
         {
             try
             {
+                int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
                 var result = this._manager.DeleteLabel(userId, labelName);
 
                 if (result.Status == true)
@@ -102,10 +109,11 @@ namespace FundooNotesApplication.Controllers
 
         [HttpPost]
         [Route("AddNote")]
-        public IActionResult AddNoteToLabel(string labelName, int noteId, int userId)
+        public IActionResult AddNoteToLabel(string labelName, int noteId)
         {
             try
             {
+                int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
                 var result = this._manager.AddNoteToLabel(labelName, noteId, userId);
 
                 if (result.Status == true)
@@ -123,10 +131,11 @@ namespace FundooNotesApplication.Controllers
 
         [HttpGet]
         [Route("GetNotes")]
-        public IActionResult GetAllNotesFromLabel(string labelName, int userId)
+        public IActionResult GetAllNotesFromLabel(string labelName)
         {
             try
             {
+                int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
                 var result = this._manager.GetAllNotesFromLabel(labelName, userId);
 
                 if (result.Status == true)
@@ -144,10 +153,11 @@ namespace FundooNotesApplication.Controllers
 
         [HttpDelete]
         [Route("DeleteNote")]
-        public IActionResult DeleteNoteFromLabel(string labelName, int noteId, int userId)
+        public IActionResult DeleteNoteFromLabel(string labelName, int noteId)
         {
             try
             {
+                int userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "UserId").Value);
                 var result = this._manager.DeleteNoteFromLabel(labelName,noteId, userId);
 
                 if (result.Status == true)
