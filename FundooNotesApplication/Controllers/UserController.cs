@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Interface;
 using CommonLayer;
 using Microsoft.AspNetCore.Mvc;
+using StackExchange.Redis;
 using System;
 using System.Threading.Tasks;
 
@@ -49,12 +50,14 @@ namespace FundooNotesApplication.Controllers
 
                 if (result.Status == true)
                 {
+                    var data = GetRedisCache();
+
                     return this.Ok(new
                     {
                         result.Status,
                         result.Message,
                         token,
-                        result.Data
+                        data
                     });
                 }
 
@@ -64,6 +67,25 @@ namespace FundooNotesApplication.Controllers
             {
                 return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
             }
+        }
+
+        private object GetRedisCache()
+        {
+            ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
+            IDatabase database = connectionMultiplexer.GetDatabase();
+
+            string firstName = database.StringGet("FirstName");
+            string lastName = database.StringGet("LastName");
+            int userId = Convert.ToInt32(database.StringGet("UserId"));
+            string email = database.StringGet("Email");
+
+            return new
+            {
+                UserID = userId,
+                FirstName = firstName,
+                LastName = lastName,
+                Email = email
+            };
         }
 
         [HttpPost]

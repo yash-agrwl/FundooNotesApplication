@@ -3,6 +3,7 @@ using Experimental.System.Messaging;
 using Microsoft.Extensions.Configuration;
 using RepositoryLayer.Context;
 using RepositoryLayer.Interface;
+using StackExchange.Redis;
 using System;
 using System.Linq;
 using System.Net;
@@ -86,6 +87,8 @@ namespace RepositoryLayer.Repository
 
                     if (userData.Password == validEmail.Password)
                     {
+                        SetRedisCache(validEmail);
+
                         result.Status = true;
                         result.Message = "Login Successful";
                         return result;
@@ -102,6 +105,16 @@ namespace RepositoryLayer.Repository
             {
                 throw new Exception(e.Message);
             }
+        }
+
+        private void SetRedisCache(RegisterModel user)
+        {
+            ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
+            IDatabase database = connectionMultiplexer.GetDatabase();
+            database.StringSet(key: "FirstName", user.FirstName);
+            database.StringSet(key: "LastName", user.LastName);
+            database.StringSet(key: "UserId", user.UserID);
+            database.StringSet(key: "Email", user.Email);
         }
 
         public ResponseModel<ResetPasswordModel> ResetPassword(ResetPasswordModel userData)
