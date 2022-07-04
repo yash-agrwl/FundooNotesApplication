@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Interface;
 using CommonLayer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
@@ -57,8 +58,12 @@ namespace FundooNotesApplication.Controllers
                 if (result.Status == true)
                 {
                     string token = this.manager.GenerateToken(result.Data.UserID);
+                    SetSession(result.Data);
                     var data = GetRedisCache();
-                    this.logger.LogInformation($"User Successfully LoggedIn with UserId:{result.Data.UserID}\n");
+
+                    var name = HttpContext.Session.GetString("UserName");
+                    var id = HttpContext.Session.GetInt32("UserId");
+                    this.logger.LogInformation($"User Successfully LoggedIn with UserId:{id} & Username:'{name}'\n");
 
                     return this.Ok(new
                     {
@@ -80,6 +85,13 @@ namespace FundooNotesApplication.Controllers
 
                 return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
             }
+        }
+
+        private void SetSession(RegisterModel user)
+        {
+            HttpContext.Session.SetString("UserName", user.FirstName + " " + user.LastName);
+            HttpContext.Session.SetString("UserEmail", user.Email);
+            HttpContext.Session.SetInt32("UserId", user.UserID);
         }
 
         private object GetRedisCache()

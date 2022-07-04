@@ -12,6 +12,7 @@ using Microsoft.OpenApi.Models;
 using RepositoryLayer.Context;
 using RepositoryLayer.Interface;
 using RepositoryLayer.Repository;
+using System;
 
 namespace FundooNotesApplication
 {
@@ -28,6 +29,12 @@ namespace FundooNotesApplication
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromHours(1);
+            });
+            services.AddDistributedMemoryCache();
 
             services.AddDbContextPool<FundooContext>(options => options.UseMySql(this.Configuration
                                                                        .GetConnectionString("FundooDB")));
@@ -111,6 +118,8 @@ namespace FundooNotesApplication
             });
 
             app.UseHttpsRedirection();
+
+            app.UseSession();
 
             app.UseRouting();
 
