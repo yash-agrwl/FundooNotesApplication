@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Interface;
 using CommonLayer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using System;
 using System.Threading.Tasks;
@@ -12,10 +13,12 @@ namespace FundooNotesApplication.Controllers
     public class UserController : Controller
     {
         private readonly IUserManager manager;
+        private readonly ILogger<UserController> logger;
 
-        public UserController(IUserManager manager)
+        public UserController(IUserManager manager, ILogger<UserController> logger)
         {
             this.manager = manager;
+            this.logger = logger;
         }
 
         [HttpPost]
@@ -28,13 +31,17 @@ namespace FundooNotesApplication.Controllers
 
                 if (result.Status == true)
                 {
+                    this.logger.LogInformation("New User successfully registered with userId: " + userdata.UserID + "\n");
                     return this.Ok(result);
                 }
 
+                this.logger.LogError("Unsuccessful attempt at registration for email: '" + userdata.Email + 
+                    "' with Error: '" + result.Message + "'\n");
                 return this.BadRequest(result);
             }
             catch (Exception ex)
             {
+                logger.LogCritical(" Exception Thrown: '" + ex.Message + "'\n");
                 return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
             }
         }
@@ -54,7 +61,7 @@ namespace FundooNotesApplication.Controllers
 
                     return this.Ok(new
                     {
-                        result.Status,
+                        result.Status, 
                         result.Message,
                         token,
                         data
