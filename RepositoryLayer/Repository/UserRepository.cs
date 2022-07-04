@@ -103,7 +103,7 @@ namespace RepositoryLayer.Repository
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                throw new Exception(e.InnerException.Message);
             }
         }
 

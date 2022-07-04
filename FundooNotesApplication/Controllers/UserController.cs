@@ -53,25 +53,31 @@ namespace FundooNotesApplication.Controllers
             try
             {
                 var result = this.manager.Login(userData);
-                string token = this.manager.GenerateToken(result.Data.UserID);
 
                 if (result.Status == true)
                 {
+                    string token = this.manager.GenerateToken(result.Data.UserID);
                     var data = GetRedisCache();
+                    this.logger.LogInformation($"User Successfully LoggedIn with UserId:{result.Data.UserID}\n");
 
                     return this.Ok(new
                     {
-                        result.Status, 
+                        result.Status,
                         result.Message,
                         token,
                         data
                     });
                 }
 
+                this.logger.LogError($"Unsuccessful attempt to LogIn for email:'{userData.Email}' " +
+                    $"with Error:'{result.Message}'\n");
+
                 return this.BadRequest(result);
             }
             catch (Exception ex)
             {
+                logger.LogCritical(" Exception Thrown: '" + ex.Message + "'\n");
+
                 return this.NotFound(new ResponseModel<string> { Status = false, Message = ex.Message });
             }
         }
