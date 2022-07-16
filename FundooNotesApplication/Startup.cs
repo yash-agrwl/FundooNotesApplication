@@ -30,6 +30,8 @@ namespace FundooNotesApplication
         {
             services.AddControllers();
 
+            services.AddCors();
+
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromHours(1);
@@ -50,7 +52,7 @@ namespace FundooNotesApplication
 
             services.AddTransient<ILabelManager, LabelManager>();
             services.AddTransient<ILabelRepository, LabelRepository>();
-
+            
             services.AddSwaggerGen(swagger =>
             {
                 swagger.SwaggerDoc(name: "v1", new OpenApiInfo { Title = "FundooNotes", Version = "v1" });
@@ -109,6 +111,13 @@ namespace FundooNotesApplication
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(builder => {
+                builder.SetIsOriginAllowed(origin => true);
+                builder.AllowAnyOrigin();
+                builder.AllowAnyMethod();
+                builder.AllowAnyHeader();
+            });
 
             app.UseSwagger();
 
